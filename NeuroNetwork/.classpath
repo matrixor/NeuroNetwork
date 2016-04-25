@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_51"/>
+	<classpathentry kind="lib" path="lib/neuroph-core-2.92.jar" sourcepath="/SelfBuildNN/neuroph-2.92"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
