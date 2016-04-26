@@ -3,7 +3,10 @@ package az.neurogh.demo;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		TestBean testBean = new TestBean();
+		testBean.testSimplePerceptron_And();
+		testBean.testSimplePerceptron_Or();
 
 	}
 
