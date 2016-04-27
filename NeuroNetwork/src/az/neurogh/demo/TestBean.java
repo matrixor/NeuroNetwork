@@ -9,6 +9,7 @@ import org.neuroph.core.events.LearningEvent;
 import org.neuroph.core.events.LearningEventListener;
 import org.neuroph.core.learning.IterativeLearning;
 import org.neuroph.nnet.learning.LMS;
+import org.neuroph.util.TransferFunctionType;
 
 public class TestBean implements LearningEventListener {
 
@@ -46,6 +47,25 @@ public class TestBean implements LearningEventListener {
         
         System.out.println("Testing trained neural network SimplePerceptron_Or");
         testNeuralNetwork(myPerceptron, trainingSet);
+	}
+	
+	public void testMultiPerceptron_AndOutputNoLearn(){
+		DataSet trainingSet = new DataSet(2,1);
+        trainingSet.addRow(new DataSetRow(new double[]{0, 0}, new double[]{Double.NaN}));
+        trainingSet.addRow(new DataSetRow(new double[]{0, 1}, new double[]{Double.NaN}));
+        trainingSet.addRow(new DataSetRow(new double[]{1, 0}, new double[]{Double.NaN}));
+        trainingSet.addRow(new DataSetRow(new double[]{1, 1}, new double[]{Double.NaN}));
+        
+        MultiPerceptron_AndOutputNoLearn myPerceptron = new MultiPerceptron_AndOutputNoLearn(TransferFunctionType.STEP,2,2,1);
+
+        for(DataSetRow testSetRow : trainingSet.getRows()) {
+        	myPerceptron.setInput(testSetRow.getInput());
+        	myPerceptron.calculate();
+            double[] networkOutput = myPerceptron.getOutput();
+
+            System.out.print("Input: " + Arrays.toString( testSetRow.getInput() ) );
+            System.out.println(" Output: " + Arrays.toString( networkOutput) );
+        }
 	}
 	
 	public static void testNeuralNetwork(NeuralNetwork neuralNet, DataSet testSet) {
