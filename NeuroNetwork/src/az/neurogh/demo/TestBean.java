@@ -68,6 +68,25 @@ public class TestBean implements LearningEventListener {
         }
 	}
 	
+	public void testBinOutputBPNN(){
+		DataSet trainingSet = new DataSet(2,1);
+		trainingSet.addRow(new DataSetRow(new double[]{0, 0}, new double[]{0}));
+        trainingSet.addRow(new DataSetRow(new double[]{0, 1}, new double[]{1}));
+        trainingSet.addRow(new DataSetRow(new double[]{1, 0}, new double[]{1}));
+        trainingSet.addRow(new DataSetRow(new double[]{1, 1}, new double[]{0}));
+        
+        BinOutputBPNN myPerceptron = new BinOutputBPNN(TransferFunctionType.SIGMOID,2,4,1);
+        
+        myPerceptron.getLearningRule().addListener(this);
+        System.out.println("Training neural network BinOutputBPNN...");
+        myPerceptron.learn(trainingSet);
+        
+        System.out.println("Testing trained neural network BinOutputBPNN");
+        testNeuralNetwork(myPerceptron, trainingSet);
+
+
+	}
+	
 	public static void testNeuralNetwork(NeuralNetwork neuralNet, DataSet testSet) {
 
         for(DataSetRow testSetRow : testSet.getRows()) {

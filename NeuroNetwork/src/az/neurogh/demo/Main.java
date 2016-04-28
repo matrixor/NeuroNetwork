@@ -7,7 +7,8 @@ public class Main {
 		TestBean testBean = new TestBean();
 		//testBean.testSimplePerceptron_And();
 		//testBean.testSimplePerceptron_Or();
-		testBean.testMultiPerceptron_AndOutputNoLearn();
+		//testBean.testMultiPerceptron_AndOutputNoLearn();
+		testBean.testBinOutputBPNN();
 
 	}
 
