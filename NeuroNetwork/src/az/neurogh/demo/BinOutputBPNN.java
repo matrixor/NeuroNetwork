@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.neuroph.core.Layer;
 import org.neuroph.core.transfer.Linear;
+import org.neuroph.core.transfer.Step;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.comp.neuron.InputNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
@@ -52,7 +53,7 @@ public class BinOutputBPNN  extends BPNeuroNetwork{
         Integer neuronsNum = neuronsInLayers.get(layerIdx);
         NeuronProperties outProperties=new NeuronProperties();
         
-        outProperties.put("transferFunction", org.neuroph.core.transfer.Step.class);
+        outProperties.put("transferFunction", Step.class);
         layer = LayerFactory.createLayer(neuronsNum, outProperties);
         this.addLayer(layer);
         ConnectionFactory.fullConnect(prevLayer, layer);
