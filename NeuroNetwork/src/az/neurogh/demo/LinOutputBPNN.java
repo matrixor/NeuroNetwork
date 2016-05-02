@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.neuroph.core.Layer;
 import org.neuroph.core.transfer.Linear;
-import org.neuroph.core.transfer.Step;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.comp.neuron.InputNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
@@ -16,32 +15,31 @@ import org.neuroph.util.NeuronProperties;
 import org.neuroph.util.TransferFunctionType;
 import org.neuroph.util.random.NguyenWidrowRandomizer;
 
-public class BinOutputBPNN  extends BPNeuroNetwork{
-	
-	private static final long serialVersionUID = 4576224434781327843L;
+public class LinOutputBPNN extends BPNeuroNetwork{
+	private static final long serialVersionUID = -845079443629155109L;
+	public LinOutputBPNN(int... neuronsInLayers) {
+        super(neuronsInLayers);
+    }
 
-	public BinOutputBPNN(TransferFunctionType sigmoid, int... neuronsInLayers) {
+	public LinOutputBPNN(TransferFunctionType sigmoid, int... neuronsInLayers) {
 		super(sigmoid,neuronsInLayers);
 	}
-
+	
 	protected void createNetwork(List<Integer> neuronsInLayers, NeuronProperties neuronProperties) {
-    	this.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
-    	
-    	NeuronProperties inputNeuronProperties = new NeuronProperties(InputNeuron.class, Linear.class);
+        this.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
+
+        NeuronProperties inputNeuronProperties = new NeuronProperties(InputNeuron.class, Linear.class);
         Layer layer = LayerFactory.createLayer(neuronsInLayers.get(0), inputNeuronProperties);
         layer.addNeuron(new BiasNeuron());
         this.addLayer(layer);
-        
-        Layer prevLayer = layer;
+
+        Layer prevLayer = layer;        
         int layerIdx = 1;
-        for (layerIdx = 1; layerIdx < neuronsInLayers.size(); layerIdx++) {
+        for (layerIdx = 1; layerIdx < neuronsInLayers.size()-1; layerIdx++) {
             Integer neuronsNum = neuronsInLayers.get(layerIdx);
             layer = LayerFactory.createLayer(neuronsNum, neuronProperties);
+            layer.addNeuron(new BiasNeuron());
             this.addLayer(layer);
-            
-            if(layerIdx != neuronsInLayers.size()-1){
-            	layer.addNeuron(new BiasNeuron());
-            }
             
             if (prevLayer != null) {
                 ConnectionFactory.fullConnect(prevLayer, layer);
@@ -49,21 +47,20 @@ public class BinOutputBPNN  extends BPNeuroNetwork{
 
             prevLayer = layer;
         }
-        
+
         Integer neuronsNum = neuronsInLayers.get(layerIdx);
         NeuronProperties outProperties=new NeuronProperties();
-        
-        outProperties.put("transferFunction", Step.class);
+        outProperties.put("transferFunction", Linear.class);
         layer = LayerFactory.createLayer(neuronsNum, outProperties);
         this.addLayer(layer);
         ConnectionFactory.fullConnect(prevLayer, layer);
         prevLayer = layer;
-        
+
         NeuralNetworkFactory.setDefaultIO(this);
-        
+
+        //this.setLearningRule(new SigmoidDeltaRule());
         this.setLearningRule(new BackPropagation());
-        
+
         this.randomizeWeights(new NguyenWidrowRandomizer(-0.7, 0.7));
     }
-
 }

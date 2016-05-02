@@ -57,7 +57,7 @@ public class BPNeuroNetwork extends NeuralNetwork<BackPropagation>{
         this.createNetwork(neuronsInLayers, neuronProperties);
     }
     
-    private void createNetwork(List<Integer> neuronsInLayers, NeuronProperties neuronProperties) {
+    protected void createNetwork(List<Integer> neuronsInLayers, NeuronProperties neuronProperties) {
     	this.setNetworkType(NeuralNetworkType.MULTI_LAYER_PERCEPTRON);
     	
     	NeuronProperties inputNeuronProperties = new NeuronProperties(InputNeuron.class, Linear.class);
@@ -81,10 +81,8 @@ public class BPNeuroNetwork extends NeuralNetwork<BackPropagation>{
 
             prevLayer = layer;
         }
-        NeuralNetworkFactory.setDefaultIO(this);
-        
-        this.setLearningRule(new BackPropagation());
-        
+        NeuralNetworkFactory.setDefaultIO(this);     
+        this.setLearningRule(new BackPropagation());       
         this.randomizeWeights(new NguyenWidrowRandomizer(-0.7, 0.7));
     }
 
